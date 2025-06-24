@@ -288,10 +288,10 @@
             while(weekCounter < curriculumData.weeks.length) {
                 const week = curriculumData.weeks[weekCounter];
                 timeline.push({ type: 'week', data: week, id: week.week });
-                const relatedProject = curriculumData.projects.find(p => p.weekSpan.endsWith(`-${week.week+1}`));
-                 if (relatedProject) {
-                     timeline.push({type: 'project', data: relatedProject, id: relatedProject.id});
-                 }
+                const relatedProject = curriculumData.projects.find(p => p.weekSpan.endsWith(`-${week.week}`));
+                if (relatedProject) {
+                    timeline.push({type: 'project', data: relatedProject, id: relatedProject.id});
+                }
                 weekCounter++;
             }
         }
@@ -302,7 +302,7 @@
                 if (item.type === 'week') {
                     navHtml += `<li><button id="nav-week-${item.data.week}" data-type="week" data-id="${item.data.week}" class="sidebar-item w-full text-left px-4 py-2 rounded-md hover:bg-teal-600 hover:text-white">Week ${item.data.week}: ${item.data.title}</button></li>`;
                 } else if (item.type === 'project') {
-                     navHtml += `<li><button id="nav-project-${item.data.id}" data-type="project" data-id="${item.data.id}" class="sidebar-item project-item w-full text-left font-bold px-4 py-2 rounded-md bg-stone-700 hover:bg-amber-500 hover:text-stone-900">Project: ${item.data.title}</button></li>`;
+                    navHtml += `<li><button id="nav-project-${item.data.id}" data-type="project" data-id="${item.data.id}" class="sidebar-item project-item w-full text-left font-bold px-4 py-2 rounded-md bg-stone-700 hover:bg-amber-500 hover:text-stone-900">Project: ${item.data.title}</button></li>`;
                 }
             });
             sidebarNavList.innerHTML = navHtml;
@@ -357,7 +357,7 @@
             sidebarNavList.addEventListener('click', (e) => {
                 const item = e.target.closest('.sidebar-item');
                 if(item) {
-                     showContent(item.dataset.type, item.dataset.id);
+                    showContent(item.dataset.type, item.dataset.id);
                 }
             });
 
