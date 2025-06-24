@@ -46,26 +46,26 @@
             from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
         }
-        .chart-container {
-            position: relative;
-            width: 100%;
-            max-width: 800px;
-            margin-left: auto;
-            margin-right: auto;
-            height: 300px;
-            max-height: 400px;
+        /* Custom scrollbar for sidebar nav */
+        #sidebar nav::-webkit-scrollbar {
+            width: 8px;
         }
-        @media (min-width: 768px) {
-            .chart-container {
-                height: 350px;
-            }
+        #sidebar nav::-webkit-scrollbar-track {
+            background: #44403c; /* stone-700 */
+        }
+        #sidebar nav::-webkit-scrollbar-thumb {
+            background-color: #78716c; /* stone-500 */
+            border-radius: 4px;
+        }
+        #sidebar nav::-webkit-scrollbar-thumb:hover {
+            background-color: #a8a29e; /* stone-400 */
         }
     </style>
 </head>
 <body class="text-stone-800">
 
-    <div class="md:flex min-h-screen">
-        <aside id="sidebar" class="w-full md:w-80 bg-stone-800 text-stone-300 p-4 md:p-6 md:flex md:flex-col shrink-0">
+    <div class="md:flex h-screen">
+        <aside id="sidebar" class="w-full md:w-80 bg-stone-800 text-stone-300 p-4 md:p-6 flex flex-col shrink-0">
             <h2 class="text-2xl font-bold text-white mb-6">Course Outline</h2>
             <nav class="flex-1 overflow-y-auto">
                 <ul id="sidebar-nav-list" class="space-y-2">
@@ -74,44 +74,35 @@
             </nav>
         </aside>
 
-        <div class="flex-1">
-            <header class="bg-white shadow-sm">
+        <div class="flex-1 flex flex-col">
+            <header class="bg-white shadow-sm shrink-0">
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
                     <h1 class="text-3xl font-bold text-stone-900">Interactive Golang Curriculum</h1>
                     <p class="text-stone-600 mt-1">A 12-week journey from novice to proficient Go developer.</p>
                 </div>
             </header>
 
-            <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
-
-                <section id="details-section" class="bg-white rounded-lg shadow p-6 md:p-8 min-h-[400px]">
-                    <!-- Content panels will be injected here -->
-                     <div id="initial-message" class="flex flex-col items-center justify-center text-center h-full text-stone-500">
-                        <div class="w-16 h-16 mb-4 text-teal-500">
-                           <span style="font-size: 4rem; line-height: 1;">&#8592;</span>
+            <main class="flex-1 overflow-y-auto">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
+                    <section id="details-section" class="bg-white rounded-lg shadow p-6 md:p-8 min-h-[400px]">
+                        <!-- Content panels will be injected here -->
+                         <div id="initial-message" class="flex flex-col items-center justify-center text-center h-full text-stone-500">
+                            <div class="w-16 h-16 mb-4 text-teal-500">
+                               <span style="font-size: 4rem; line-height: 1;">&#8592;</span>
+                            </div>
+                            <h3 class="text-xl font-semibold">Select an item from the outline</h3>
+                            <p>Click on a week or project in the sidebar to see the details.</p>
                         </div>
-                        <h3 class="text-xl font-semibold">Select an item from the outline</h3>
-                        <p>Click on a week or project in the sidebar to see the details.</p>
+                    </section>
+                </div>
+                 <footer class="bg-stone-100 border-t border-stone-200 mt-8">
+                    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 text-center text-stone-500">
+                        <p>&copy; 2024 Golang Learning Path. An interactive visualization.</p>
                     </div>
-                </section>
-
-                <section id="chart-section" class="mt-12">
-                     <h2 class="text-2xl font-bold mb-2">Curriculum Overview</h2>
-                     <p class="text-stone-600 mb-8 max-w-3xl">This chart shows the number of topics covered each week, giving you an idea of the learning pace. You can click on a bar to jump directly to that week's details.</p>
-                    <div class="bg-white rounded-lg shadow p-6 md:p-8">
-                        <div class="chart-container">
-                            <canvas id="topicsChart"></canvas>
-                        </div>
-                    </div>
-                </section>
-
+                </footer>
             </main>
             
-            <footer class="bg-stone-100 border-t border-stone-200 mt-8">
-                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 text-center text-stone-500">
-                    <p>&copy; 2024 Golang Learning Path. An interactive visualization.</p>
-                </div>
-            </footer>
+           
         </div>
     </div>
 
@@ -367,38 +358,6 @@
                 const item = e.target.closest('.sidebar-item');
                 if(item) {
                      showContent(item.dataset.type, item.dataset.id);
-                }
-            });
-
-            const ctx = document.getElementById('topicsChart').getContext('2d');
-            const topicsChart = new Chart(ctx, {
-                type: 'bar',
-                data: {
-                    labels: curriculumData.weeks.map(w => `Week ${w.week}`),
-                    datasets: [{
-                        label: '# of Topics',
-                        data: curriculumData.weeks.map(w => w.topics.length),
-                        backgroundColor: 'rgba(20, 184, 166, 0.6)',
-                        borderColor: 'rgba(15, 118, 110, 1)',
-                        borderWidth: 1,
-                        borderRadius: 4,
-                        hoverBackgroundColor: 'rgba(13, 148, 136, 0.8)'
-                    }]
-                },
-                options: {
-                    responsive: true, maintainAspectRatio: false,
-                    scales: { y: { beginAtZero: true, ticks: { color: '#57534e' }, grid: { color: '#e7e5e4' } }, x: { ticks: { color: '#57534e' }, grid: { display: false } } },
-                    plugins: { legend: { display: false }, tooltip: { backgroundColor: '#292524', titleFont: { size: 14, weight: 'bold' }, bodyFont: { size: 12 }, displayColors: false } },
-                    onClick: (event, elements) => {
-                        if (elements.length > 0) {
-                            const weekId = curriculumData.weeks[elements[0].index].week;
-                            showContent('week', weekId);
-                            const sidebarItem = document.getElementById(`nav-week-${weekId}`);
-                            if(sidebarItem) {
-                                sidebarItem.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                            }
-                        }
-                    }
                 }
             });
 
