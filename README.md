@@ -1,7 +1,5 @@
 # go-roadmap
 
-Based on the provided Golang curriculum, here is a simple overview:
-
 This 12-week Golang curriculum is designed as a journey to take a developer from a novice level to proficiency. The course is structured into distinct modules that build upon each other, combining theoretical knowledge with practical application.
 
 ### Curriculum Breakdown
