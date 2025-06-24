@@ -86,23 +86,22 @@
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
                     <section id="details-section" class="bg-white rounded-lg shadow p-6 md:p-8 min-h-[400px]">
                         <!-- Content panels will be injected here -->
-                         <div id="initial-message" class="flex flex-col items-center justify-center text-center h-full text-stone-500">
+                        <div id="initial-message" class="flex flex-col items-center justify-center text-center h-full text-stone-500">
                             <div class="w-16 h-16 mb-4 text-teal-500">
-                               <span style="font-size: 4rem; line-height: 1;">&#8592;</span>
+                            <span style="font-size: 4rem; line-height: 1;">&#8592;</span>
                             </div>
                             <h3 class="text-xl font-semibold">Select an item from the outline</h3>
                             <p>Click on a week or project in the sidebar to see the details.</p>
                         </div>
                     </section>
                 </div>
-                 <footer class="bg-stone-100 border-t border-stone-200 mt-8">
+                <footer class="bg-stone-100 border-t border-stone-200 mt-8">
                     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 text-center text-stone-500">
                         <p>&copy; 2024 Golang Learning Path. An interactive visualization.</p>
                     </div>
                 </footer>
             </main>
             
-           
         </div>
     </div>
 
@@ -219,7 +218,10 @@
                         'Write unit tests using the `testing` package.',
                         'Understand the basics of benchmarking Go code.'
                     ],
-                    topics: ['Testing in Go', '`testing` Package', 'Running Tests', 'Table Driven Tests', 'Benchmarking']
+                    topics: ['Testing in Go', '`testing` Package', 'Running Tests', 'Table Driven Tests', 'Benchmarking'],
+                    references: [
+                        { text: 'Learn Go with Tests', url: 'https://quii.gitbook.io/learn-go-with-tests' }
+                    ]
                 },
                 {
                     week: 11,
@@ -251,7 +253,7 @@
                     concepts: ['Variables', 'Slices', 'fmt Package', 'Control Flow', 'Functions'],
                     realWorld: 'Developers live in the terminal. Building CLI tools is a common and powerful use case for Go, used in everything from system administration to cloud infrastructure management (like Docker and kubectl).'
                 },
-                 {
+                {
                     id: 'p2',
                     weekSpan: '3-4',
                     title: 'Gopher Links: The Personal URL Shortener',
@@ -289,9 +291,9 @@
                 const week = curriculumData.weeks[weekCounter];
                 timeline.push({ type: 'week', data: week, id: week.week });
                 const relatedProject = curriculumData.projects.find(p => p.weekSpan.endsWith(`-${week.week+1}`));
-                 if (relatedProject) {
-                     timeline.push({type: 'project', data: relatedProject, id: relatedProject.id});
-                 }
+                if (relatedProject) {
+                    timeline.push({type: 'project', data: relatedProject, id: relatedProject.id});
+                }
                 weekCounter++;
             }
         }
@@ -302,7 +304,7 @@
                 if (item.type === 'week') {
                     navHtml += `<li><button id="nav-week-${item.data.week}" data-type="week" data-id="${item.data.week}" class="sidebar-item w-full text-left px-4 py-2 rounded-md hover:bg-teal-600 hover:text-white">Week ${item.data.week}: ${item.data.title}</button></li>`;
                 } else if (item.type === 'project') {
-                     navHtml += `<li><button id="nav-project-${item.data.id}" data-type="project" data-id="${item.data.id}" class="sidebar-item project-item w-full text-left font-bold px-4 py-2 rounded-md bg-stone-700 hover:bg-amber-500 hover:text-stone-900">Project: ${item.data.title}</button></li>`;
+                    navHtml += `<li><button id="nav-project-${item.data.id}" data-type="project" data-id="${item.data.id}" class="sidebar-item project-item w-full text-left font-bold px-4 py-2 rounded-md bg-stone-700 hover:bg-amber-500 hover:text-stone-900">Project: ${item.data.title}</button></li>`;
                 }
             });
             sidebarNavList.innerHTML = navHtml;
@@ -311,11 +313,24 @@
         function generateContentPanels() {
             let panelsHtml = '';
             curriculumData.weeks.forEach(week => {
+                let referencesHtml = '';
+                if(week.references && week.references.length > 0) {
+                    referencesHtml = `
+                        <div class="md:col-span-2 mt-6">
+                            <h4 class="text-lg font-semibold mb-2">References</h4>
+                            <ul class="list-disc list-inside space-y-2 text-stone-700">
+                                ${week.references.map(ref => `<li><a href="${ref.url}" target="_blank" rel="noopener noreferrer" class="text-teal-600 hover:underline">${ref.text}</a></li>`).join('')}
+                            </ul>
+                        </div>
+                    `;
+                }
+
                 panelsHtml += `<div id="content-week-${week.week}" class="content-panel">
                         <h3 class="text-2xl font-bold text-teal-600">Week ${week.week}: ${week.title}</h3>
                         <div class="mt-6 grid md:grid-cols-2 gap-8">
                             <div><h4 class="text-lg font-semibold mb-2">Learning Objectives</h4><ul class="list-disc list-inside space-y-2 text-stone-700">${week.objectives.map(obj => `<li>${obj}</li>`).join('')}</ul></div>
                             <div><h4 class="text-lg font-semibold mb-2">Key Topics</h4><div class="flex flex-wrap gap-2">${week.topics.map(topic => `<span class="bg-stone-200 text-stone-800 text-sm font-medium px-3 py-1 rounded-full">${topic}</span>`).join('')}</div></div>
+                            ${referencesHtml}
                         </div></div>`;
             });
             curriculumData.projects.forEach(project => {
@@ -357,7 +372,7 @@
             sidebarNavList.addEventListener('click', (e) => {
                 const item = e.target.closest('.sidebar-item');
                 if(item) {
-                     showContent(item.dataset.type, item.dataset.id);
+                    showContent(item.dataset.type, item.dataset.id);
                 }
             });
 
