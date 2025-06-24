@@ -333,7 +333,7 @@
             while(weekCounter < curriculumData.weeks.length) {
                 const week = curriculumData.weeks[weekCounter];
                 timeline.push({ type: 'week', data: week, id: week.week });
-                const relatedProject = curriculumData.projects.find(p => p.weekSpan.endsWith(`-${week.week+1}`));
+                const relatedProject = curriculumData.projects.find(p => p.weekSpan.endsWith(`-${week.week}`));
                 if (relatedProject) {
                     timeline.push({type: 'project', data: relatedProject, id: relatedProject.id});
                 }
