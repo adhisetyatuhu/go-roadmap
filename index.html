@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Interactive Golang Curriculum</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -60,6 +60,19 @@
         #sidebar nav::-webkit-scrollbar-thumb:hover {
             background-color: #a8a29e; /* stone-400 */
         }
+        .prose strong {
+            font-weight: 600;
+            color: #292524; /* stone-800 */
+        }
+        .prose code {
+            background-color: #e7e5e4; /* stone-200 */
+            color: #c2410c; /* orange-600 */
+            padding: 2px 6px;
+            margin: 0 2px;
+            border-radius: 4px;
+            font-size: 0.9em;
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+        }
     </style>
 </head>
 <body class="text-stone-800">
@@ -102,6 +115,7 @@
                 </footer>
             </main>
             
+        
         </div>
     </div>
 
@@ -249,7 +263,14 @@
                     id: 'p1',
                     weekSpan: '1-2',
                     title: 'Go-Do: The Terminal Task Tracker',
-                    description: 'Forget "hello, world." You\'re building Go-Do, a slick task manager that runs directly in your terminal. It will allow you to add new tasks, list all pending tasks, and eventually mark them as complete. This project is your first step toward building professional developer tools.',
+                    description: 'Go beyond a simple \'hello, world\' and build a practical command-line tool. **Go-Do** is a task manager that lives in your terminal. You will implement core functionalities like `add` to create new tasks, `list` to view all your pending items, and `complete` to mark tasks as done. This project will solidify your understanding of user input, data storage in slices, and application structure, serving as a foundational step toward building professional developer tools.',
+                    details: [
+                        'Implement a main loop that continuously prompts the user for commands.',
+                        'Use a `switch` statement to handle different commands (`add`, `list`, `complete`, `exit`).',
+                        'Store tasks in a global slice of strings or structs.',
+                        'When listing tasks, display them with a number and a status (e.g., `[ ] 1. Buy milk`).',
+                        'The `complete` command should take the task number as input and update its status.'
+                    ],
                     concepts: ['Variables', 'Slices', 'fmt Package', 'Control Flow', 'Functions'],
                     realWorld: 'Developers live in the terminal. Building CLI tools is a common and powerful use case for Go, used in everything from system administration to cloud infrastructure management (like Docker and kubectl).'
                 },
@@ -257,7 +278,14 @@
                     id: 'p2',
                     weekSpan: '3-4',
                     title: 'Gopher Links: The Personal URL Shortener',
-                    description: 'Build Gopher Links, an in-memory URL shortener. This tool will take a long, unwieldy URL and magically transform it into a short, elegant "gopher link." You can then use the short link to retrieve the original URL.',
+                    description: 'Dive into the world of data structures by creating **Gopher Links**, your own in-memory URL shortening service. The application will accept a long URL and generate a unique, short identifier for it. You will use a `map` for instant lookups, associating the short key with the original long URL. This project will challenge you to think about how data is stored, managed, and retrieved efficiently, mimicking the core logic of popular services like Bitly or TinyURL.',
+                    details: [
+                        'Create a `struct` to hold both the original and the shortened URL.',
+                        'Use a `map[string]string` to store the short-to-long URL mappings for O(1) lookups.',
+                        'Write a function to generate a random alphanumeric string of a fixed length (e.g., 6 characters) for the short link.',
+                        'Design a simple interactive menu to `add` a new link or `get` an original link from a short one.',
+                        'Handle potential errors, such as a short link not being found in the map.'
+                    ],
                     concepts: ['Structs', 'Maps', 'Slices', 'Functions', 'Basic Randomness'],
                     realWorld: 'This mimics the core logic of services like Bitly or TinyURL and is a fantastic introduction to building services that manage and transform data.'
                 },
@@ -265,7 +293,14 @@
                     id: 'p3',
                     weekSpan: '7-8',
                     title: 'Go-Pher: The Concurrent Web Crawler',
-                    description: 'Build Go-Pher, a speedy web crawler that "goes for" information. Your program will take a list of website URLs and fetch the title from each one simultaneously, not one by one. You\'ll see a dramatic speed-up and witness the power of Go\'s concurrency model firsthand.',
+                    description: 'Unleash Go\'s most famous feature: concurrency. With **Go-Pher**, you will build a powerful web crawler that fetches data from multiple websites at the same time. Instead of waiting for one site to respond before starting the next, you will launch a separate `goroutine` for each URL. The results (like the page title) will be communicated back to the main function safely using `channels`. This project provides a tangible demonstration of how concurrency can dramatically improve the performance of I/O-bound applications.',
+                    details: [
+                        'Define a list of URLs to crawl.',
+                        'For each URL, launch a dedicated `goroutine` to perform the HTTP GET request.',
+                        'Use a `sync.WaitGroup` to ensure the main function waits for all goroutines to finish before exiting.',
+                        'Create a channel to pass the fetched page titles (or an error) from each goroutine back to the main function.',
+                        'The main function will range over the channel to collect and print the results as they come in.'
+                    ],
                     concepts: ['Goroutines', 'Channels', 'sync.WaitGroup', 'net/http (basic)', 'strings (basic)'],
                     realWorld: 'High-performance data collection is critical for search engines, data analysis platforms, and market intelligence tools. This project demonstrates how Go is perfectly suited for high-throughput I/O tasks.'
                 },
@@ -273,7 +308,15 @@
                     id: 'p4',
                     weekSpan: '11-12',
                     title: 'Project Zenith: The Wisdom API',
-                    description: 'Launch Project Zenith, a web API that serves wisdom on demand. You will create a server that, when accessed at the /quote endpoint, delivers an inspirational or thought-provoking quote in a clean JSON format. Your first live service will be a beacon of positivity on the web!',
+                    description: 'Bring your Go skills to the web by launching **Project Zenith**, your first live API service. You will build an HTTP server from scratch using the `net/http` package. This server will have an endpoint, such as `/api/quote`, which, when accessed, returns a randomly selected inspirational quote formatted as JSON. This project is a comprehensive introduction to building web backends, covering routing, request handling, and data serialization—the foundational skills for any API developer.',
+                    details: [
+                        'Use `http.HandleFunc` to register a handler function for a specific URL path (e.g., `/quote`).',
+                        'Inside the handler, define a slice of `structs`, where each struct represents a quote (e.g., with `Text` and `Author` fields).',
+                        'Select a random quote from the slice.',
+                        'Use the `encoding/json` package to marshal the quote struct into a JSON byte slice.',
+                        'Set the `Content-Type` header to `application/json` and write the JSON data as the HTTP response.',
+                        'Start the server using `http.ListenAndServe` on a specific port (e.g., `:8080`).'
+                    ],
                     concepts: ['net/http Package', 'Routing', 'JSON Handling', 'Structs', 'File I/O (optional)'],
                     realWorld: 'This is the quintessential "first step" into building REST APIs. Almost every modern application, from mobile apps to complex web platforms, relies on APIs just like this to fetch data.'
                 }
@@ -290,7 +333,7 @@
             while(weekCounter < curriculumData.weeks.length) {
                 const week = curriculumData.weeks[weekCounter];
                 timeline.push({ type: 'week', data: week, id: week.week });
-                const relatedProject = curriculumData.projects.find(p => p.weekSpan.endsWith(`-${week.week}`));
+                const relatedProject = curriculumData.projects.find(p => p.weekSpan.endsWith(`-${week.week+1}`));
                 if (relatedProject) {
                     timeline.push({type: 'project', data: relatedProject, id: relatedProject.id});
                 }
@@ -334,10 +377,23 @@
                         </div></div>`;
             });
             curriculumData.projects.forEach(project => {
+                let detailsHtml = '';
+                if(project.details && project.details.length > 0) {
+                    detailsHtml = `
+                        <div>
+                            <h4 class="text-lg font-semibold mb-2">Key Implementation Steps</h4>
+                            <ul class="list-disc list-inside space-y-2 text-stone-700">
+                                ${project.details.map(detail => `<li>${detail}</li>`).join('')}
+                            </ul>
+                        </div>
+                    `;
+                }
+
                 panelsHtml += `<div id="content-project-${project.id}" class="content-panel">
                         <h3 class="text-2xl font-bold text-amber-500">Project (Weeks ${project.weekSpan}): ${project.title}</h3>
                         <div class="mt-6 space-y-4">
-                            <div><h4 class="text-lg font-semibold mb-2">Description</h4><p class="text-stone-700">${project.description}</p></div>
+                            <div class="prose"><h4 class="text-lg font-semibold mb-2">Description</h4>${marked.parse(project.description)}</div>
+                            ${detailsHtml}
                             <div><h4 class="text-lg font-semibold mb-2">Concepts to Apply</h4><div class="flex flex-wrap gap-2">${project.concepts.map(c => `<span class="bg-teal-100 text-teal-800 text-sm font-medium px-3 py-1 rounded-full">${c}</span>`).join('')}</div></div>
                             <div><h4 class="text-lg font-semibold mb-2">Real-World Application</h4><p class="text-stone-700 bg-stone-100 p-4 rounded-md border-l-4 border-stone-300">${project.realWorld}</p></div>
                         </div></div>`;
