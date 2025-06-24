@@ -361,17 +361,17 @@
                     referencesHtml = `
                         <div class="md:col-span-2 mt-6">
                             <h4 class="text-lg font-semibold mb-2">References</h4>
-                            <ul class="list-disc list-inside space-y-2 text-stone-700">
+                            <ul class="list-disc list-outside pl-5 space-y-2 text-stone-700">
                                 ${week.references.map(ref => `<li><a href="${ref.url}" target="_blank" rel="noopener noreferrer" class="text-teal-600 hover:underline">${ref.text}</a></li>`).join('')}
                             </ul>
                         </div>
                     `;
                 }
-
+                // *** CHANGE: Replaced 'list-inside' with 'list-outside pl-5' for proper text wrapping alignment.
                 panelsHtml += `<div id="content-week-${week.week}" class="content-panel">
                         <h3 class="text-2xl font-bold text-teal-600">Week ${week.week}: ${week.title}</h3>
                         <div class="mt-6 grid md:grid-cols-2 gap-8">
-                            <div><h4 class="text-lg font-semibold mb-2">Learning Objectives</h4><ul class="list-disc list-inside space-y-2 text-stone-700">${week.objectives.map(obj => `<li>${marked.parseInline(obj)}</li>`).join('')}</ul></div>
+                            <div><h4 class="text-lg font-semibold mb-2">Learning Objectives</h4><ul class="list-disc list-outside pl-5 space-y-2 text-stone-700">${week.objectives.map(obj => `<li>${marked.parseInline(obj)}</li>`).join('')}</ul></div>
                             <div><h4 class="text-lg font-semibold mb-2">Key Topics</h4><div class="flex flex-wrap gap-2">${week.topics.map(topic => `<span class="bg-stone-200 text-stone-800 text-sm font-medium px-3 py-1 rounded-full">${topic}</span>`).join('')}</div></div>
                             ${referencesHtml}
                         </div></div>`;
@@ -379,10 +379,11 @@
             curriculumData.projects.forEach(project => {
                 let detailsHtml = '';
                 if(project.details && project.details.length > 0) {
+                    // *** CHANGE: Replaced 'list-inside' with 'list-outside pl-5' for proper text wrapping alignment.
                     detailsHtml = `
                         <div>
                             <h4 class="text-lg font-semibold mb-2">Key Implementation Steps</h4>
-                            <ul class="list-disc list-inside space-y-2 text-stone-700">
+                            <ul class="list-disc list-outside pl-5 space-y-2 text-stone-700">
                                 ${project.details.map(detail => `<li>${marked.parseInline(detail)}</li>`).join('')}
                             </ul>
                         </div>
@@ -392,7 +393,7 @@
                 panelsHtml += `<div id="content-project-${project.id}" class="content-panel">
                         <h3 class="text-2xl font-bold text-amber-500">Project (Weeks ${project.weekSpan}): ${project.title}</h3>
                         <div class="mt-6 space-y-4">
-                            <div class="prose"><h4 class="text-lg font-semibold mb-2">Description</h4>${marked.parse(project.description)}</div>
+                            <div class="prose max-w-none"><h4 class="text-lg font-semibold mb-2">Description</h4>${marked.parse(project.description)}</div>
                             ${detailsHtml}
                             <div><h4 class="text-lg font-semibold mb-2">Concepts to Apply</h4><div class="flex flex-wrap gap-2">${project.concepts.map(c => `<span class="bg-teal-100 text-teal-800 text-sm font-medium px-3 py-1 rounded-full">${c}</span>`).join('')}</div></div>
                             <div><h4 class="text-lg font-semibold mb-2">Real-World Application</h4><p class="text-stone-700 bg-stone-100 p-4 rounded-md border-l-4 border-stone-300">${project.realWorld}</p></div>
